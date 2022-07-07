@@ -48,7 +48,7 @@
 #define AZUL 39
 #define VERDE 40
 
-void leerPassword(int p_intento);
+void leerPassword();
 int validarPassword();
 void sigueIntentando();
 void passwordCorrecta();
