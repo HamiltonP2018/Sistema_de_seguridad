@@ -101,6 +101,8 @@ void setup() {
 
 }
 
+
+
 void loop() {
 
   if( intentos <= fallos && bandera != 1){
@@ -124,6 +126,16 @@ void loop() {
   
 }
 
+
+ /**
+     * Lee la contraseñar digitada por el usuario <br>
+     * <b>post: </b> primero limpia la pantalla de LCD luego se imprimie un texto con el numero de intentos, luego entra a un 
+     * ciclo repetitivo donde se digita caracter por caracter y se va guardando en arreglo de caracteres, el ciclo se repetira hasta 
+     * ser menor a 4, porque es la longitud del arreglo.
+     * @param key variable de tipo caracter que guarda el caracter diigitado por el usuario.
+     * @param  pass_usuario[] arreglo que guarad los 4 caracteres digitados por el usuario.
+ */
+
 void leerPassword()
 {
       lcd.clear();
@@ -133,13 +145,24 @@ void leerPassword()
             pass_usuario[i] = key;
       }    
 }
-
+ /**
+     * validad si la contraseña digitada por el usuario <br>
+     * <b>post: </b> Se inicializa un contadores, luego se inicia un ciclo que contiene un condicional que permite evaluar      
+     * si los caracteres del arreglo con la contraseña digitada por el usuario estan en la misma posicion que el 
+     * arreglo que contiene la contraseña ya preestablecidad, cuando el caracter es correcto se incrementa un contador que 
+     * permite identificar cuantos caractes correctos hay, si el numero de caractes es 3, signiica que la contraseña es 
+     * correcta de lo contrario es incorrecta 
+     * @return el numero 1 si el numero de caracteres es correcto
+     * @return el numero 0 si el numero de caracteres es incorrecto
+ */
 int validarPassword(){
  int i = 0;
+ int j = 0;
  do{
       if(pass_usuario[i] == password[i]){
-          i++;
+          j++;
         }
+        i++;
     }while(i < 4);
 
     if(i == 3){
@@ -149,6 +172,16 @@ int validarPassword(){
       }
 }
 
+
+
+
+ /**
+     * Limpia todos los caractes del arreglo que contiene la contraseña digitada por el usuario
+     * <b>post: </b> en un ciclo repetitivo se igualan  todas las posiciones del arreglo a un valor 
+     * nulo
+ */
+
+
 void limpiarPass_usuario(){
 
     for(int i =0; i < 4; i++){
@@ -156,6 +189,15 @@ void limpiarPass_usuario(){
       }
 }
 
+
+ /**
+     * Muestra que la contraseña es correcta
+     * <b>post: </b> hace el llamado al metodo que limpia la contraseña, luego imprime en el LCD
+     * un texto que avisa que la contraseña es correcta, enciende el led verde y apaga los demas leds.
+     * se muestra durante 5 segundos
+     * @see limpiarPass_usuario()
+ */
+ 
 void passwordCorrecta(){
    limpiarPass_usuario();
      lcd.clear();
@@ -166,10 +208,19 @@ void passwordCorrecta(){
         delay(5000);
   }
 
+/**
+     * Muestra que la contraseña es incorrecta, pero que puede seguir intentando
+     * <b>post: </b> hace el llamado al metodo que limpiar la contraseña, luego imprime en el LCD
+     * un texto que avisa que la contraseña es incorrecta y que puede seguir intentando, enciende el led azul, apaga los demas leds
+     * e incrementa el numero de intentos.
+     * se muestra durante 5 segundos
+     * @see limpiarPass_usuario()
+ */
 void sigueIntentando(){
         limpiarPass_usuario();
         lcd.clear();
         lcd.print("CLAVE INCORRECTA");
+        lcd.print("SIGUE INTENTANDO");
         digitalWrite(VERDE, LOW);
         digitalWrite(ROJO, LOW);
         digitalWrite(AZUL, HIGH);
@@ -177,6 +228,14 @@ void sigueIntentando(){
         delay(3000);
 }
 
+/**
+     * Muestra que la contraseña es incorrecta
+     * <b>post: </b> hace el llamado al metodo que limpiar la contraseña, luego imprime en el LCD
+     * un texto que avisa que la contraseña es incorrecta y que ha alcanzado el numero maximo de intentos, 
+     * enciende el led rojo, apaga los demas leds
+     * se muestra durante 5 segundos
+     * @see limpiarPass_usuario()
+ */
  void passwordIncorrecta(){
         limpiarPass_usuario();
         lcd.clear();
